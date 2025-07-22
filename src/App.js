@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-// import './App.css';
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+
 import Navbar from './components/Navbar';
 import Textform from './components/Textform';
 import Alert123 from './components/Alert123';
-// import About123 from './components/About123';
-// import Not from './components/Not';
+import About123 from './components/About123';
 
 function App() {
-
   const [mode, setMode] = useState('light');
   const [alert, setAlert] = useState(null);
 
@@ -15,65 +14,43 @@ function App() {
     if (mode === "light") {
       setMode("dark");
       document.body.style.background = "#042743";
-      document.body.style.color="white";
-        showAlert("Dark Mode Enable", "success");
-        document.title = 'TextUtils- DarkMode';
-        // setInterval(() => {
-        //   document.title = 'Its very Amazing'
-        // },2000);
-        // setInterval(() => {
-        //   document.title='Download it'
-        // },1500);
+      document.body.style.color = "white";
+      showAlert("Dark Mode Enabled", "success");
     } else {
       setMode("light");
-      document.body.style.background = "white";        
-     document.body.style.color="black";
-     showAlert("Light Mode Enable", "success");
-     document.title = 'TextUtils- LightMode';
-
+      document.body.style.background = "white";
+      document.body.style.color = "black";
+      showAlert("Light Mode Enabled", "success");
     }
   };
-
-  const [myStyle, setMyStyle] = useState({
-    color: "black",
-    // minHeight: "100vh",
-  });
 
   const showAlert = (message, type) => {
     setAlert({
       msg: message,
       type: type,
     });
-    setTimeout(() => {
-      setAlert(null);
-    }, 3000);
+    setTimeout(() => setAlert(null), 3000);
   };
 
   return (
-    <>
-      <div style={myStyle}>
-        <Navbar
-          title="Teaeser"
-          myStyle={myStyle}
-          setMyStyle={setMyStyle}
-          mode={mode}
-          toggleMode={toggleMode}
-        />
-
-        <Alert123 alert={alert} />
- <Textform
-            showAlert={showAlert}
-            heading="Enter the text as headline"
-            myStyle={myStyle}
-            mode={mode}
-          />
-        <div className="container my-3">
-          {/* <About123 /> */}
-
-          
-        </div>
+    <Router>
+      <Navbar title="Teaeser" mode={mode} toggleMode={toggleMode} />
+      <Alert123 alert={alert} />
+      
+      <div className="container my-3" style={{ marginTop: "80px" }}>
+        <Routes>
+          {/* 👇 index route ensures homepage renders properly on first load */}
+          <Route index element={
+            <Textform
+              showAlert={showAlert}
+              heading="Enter the text as headline"
+              mode={mode}
+            />
+          } />
+          <Route path="/about" element={<About123 mode={mode} />} />
+        </Routes>
       </div>
-    </>
+    </Router>
   );
 }
 

@@ -57,3 +57,6 @@
   margin: 2rem;
   padding: 1rem;
 }
+body.dark .accordion-button::after {
+  filter: invert(1);
+}
